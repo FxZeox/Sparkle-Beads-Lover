@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   --background: #fffdf8;
@@ -32,6 +33,43 @@ body {
 
 html {
   scroll-behavior: smooth;
+}
+
+html.dark {
+  color-scheme: dark;
+  --background: #0d1422;
+  --foreground: #f3f6fb;
+  --muted: #a9b4c8;
+  --background-light: #111a2a;
+}
+
+html.dark body {
+  background-color: #0d1422;
+  background-image:
+    radial-gradient(circle at top left, rgba(67, 119, 167, 0.2), transparent 30%),
+    radial-gradient(circle at top right, rgba(174, 133, 55, 0.13), transparent 26%),
+    linear-gradient(180deg, #0d1422 0%, #111a2a 50%, #0b1320 100%);
+}
+
+.product-card-title {
+  color: #0f172a !important;
+}
+
+.product-card-label {
+  color: #475569 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-slow-zoom,
+  .animate-float-gentle,
+  .animate-fade-up,
+  .animate-fade-soft {
+    animation: none;
+  }
 }
 
 ::selection {

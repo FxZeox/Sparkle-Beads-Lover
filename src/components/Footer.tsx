@@ -51,9 +51,11 @@ export default function Footer() {
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <span className="mt-0.5 flex-shrink-0 text-lg">📱</span>
-                  <a href="tel:+923016555942" className="text-sm font-medium text-white/72 transition hover:text-white">
-                    +92 301 6555942
-                  </a>
+                  <div className="flex flex-col gap-2">
+                    <a href="tel:+923153661866" className="text-sm font-medium text-white/72 transition hover:text-white">
+                      +92 315 3661866
+                    </a>
+                  </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="mt-0.5 flex-shrink-0 text-lg">📧</span>
@@ -86,13 +88,13 @@ export default function Footer() {
                   <span>Instagram</span>
                 </a>
                 <a
-                  href="https://wa.me/923016555942"
+                  href="https://wa.me/923153661866"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 rounded-full bg-white/8 px-4 py-3 text-sm font-medium text-white/78 transition hover:bg-white/14 hover:text-white"
                 >
                   <FaWhatsapp className="text-lg" aria-hidden="true" />
-                  <span>WhatsApp</span>
+                  <span>WhatsApp: 0315 3661866</span>
                 </a>
               </div>
             </div>

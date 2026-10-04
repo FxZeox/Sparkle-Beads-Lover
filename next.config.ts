@@ -4,6 +4,8 @@ const nextConfig: NextConfig = {
   // Hide Next.js development indicator badge in local dev preview.
   devIndicators: false,
   images: {
+    formats: ["image/webp"],
+    minimumCacheTTL: 86400,
     remotePatterns: [
       {
         protocol: "https",

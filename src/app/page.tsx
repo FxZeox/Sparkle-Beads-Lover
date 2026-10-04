@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
+import CartDrawer, { CartItem } from '@/components/CartDrawer';
 import ProductCard from '@/components/ProductCard';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
@@ -11,6 +12,8 @@ import { Product } from '@/types';
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -32,9 +35,51 @@ export default function Home() {
     }
   };
 
+  const addToCart = (product: Product) => {
+    setCartItems((currentItems) => {
+      const existingItem = currentItems.find(
+        (item) => item.product._id === product._id
+      );
+
+      if (existingItem) {
+        return currentItems.map((item) =>
+          item.product._id === product._id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+
+      return [...currentItems, { product, quantity: 1 }];
+    });
+    setIsCartOpen(true);
+  };
+
+  const updateCartQuantity = (productId: string, quantity: number) => {
+    if (quantity <= 0) {
+      setCartItems((currentItems) =>
+        currentItems.filter((item) => item.product._id !== productId)
+      );
+      return;
+    }
+
+    setCartItems((currentItems) =>
+      currentItems.map((item) =>
+        item.product._id === productId ? { ...item, quantity } : item
+      )
+    );
+  };
+
+  const removeFromCart = (productId: string) => {
+    setCartItems((currentItems) =>
+      currentItems.filter((item) => item.product._id !== productId)
+    );
+  };
+
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
   return (
-    <main className="min-h-screen overflow-x-hidden bg-transparent text-slate-900">
-      <Navbar />
+    <main className="storefront min-h-screen overflow-x-hidden bg-transparent text-slate-900">
+      <Navbar cartCount={cartCount} onCartOpen={() => setIsCartOpen(true)} />
       <HeroSection products={products} loading={loading} />
 
       <section
@@ -44,13 +89,13 @@ export default function Home() {
         <div className="pointer-events-none absolute inset-x-0 top-8 h-48 bg-[radial-gradient(circle_at_center,rgba(108,166,221,0.12),transparent_65%)]" />
         <div className="mx-auto max-w-[1280px]">
           <div className="mb-10 text-center sm:mb-12">
-            <p className="mb-3 text-[0.72rem] font-semibold uppercase tracking-[0.42em] text-slate-500">
+            <p className="mb-3 text-[0.72rem] font-semibold uppercase tracking-[0.42em] text-slate-500 dark:text-slate-400">
               Curated Collection
             </p>
-            <h2 className="font-display text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+            <h2 className="font-display text-4xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-5xl lg:text-6xl">
               Featured Collection
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">
               Discover our handcrafted bracelets, each piece designed with elegance and care
             </p>
           </div>
@@ -79,7 +124,7 @@ export default function Home() {
                   className="animate-fade-up"
                   style={{ animationDelay: `${index * 70}ms` }}
                 >
-                  <ProductCard product={product} />
+                  <ProductCard product={product} onAddToCart={addToCart} />
                 </div>
               ))}
             </div>
@@ -90,8 +135,16 @@ export default function Home() {
       <AboutSection />
       <Footer />
 
+      <CartDrawer
+        items={cartItems}
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        onQuantityChange={updateCartQuantity}
+        onRemove={removeFromCart}
+      />
+
       <a
-        href="https://wa.me/923016555942?text=Hi%20Sparkle%20Beads%20Lover%2C%20I%20want%20to%20order%20a%20bracelet."
+        href="https://wa.me/923153661866?text=Hi%20Sparkle%20Beads%20Lover%2C%20I%20want%20to%20order%20a%20bracelet."
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat with us on WhatsApp"

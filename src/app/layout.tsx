@@ -25,13 +25,28 @@ export const metadata: Metadata = {
   keywords: "bracelets, jewelry, shopping, WhatsApp ordering",
 };
 
+const themeScript = `
+  try {
+    const savedTheme = localStorage.getItem('sparkle-theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.documentElement.style.colorScheme = theme;
+  } catch (_) {}
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body
         className={`${manrope.variable} ${cormorantGaramond.variable} ${geistMono.variable} font-sans antialiased`}
       >
